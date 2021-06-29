@@ -26,6 +26,6 @@ def main():
     account_id = args.account_id if args.account_id else os.environ.get("JIRA_ACCOUNT_ID")
     token = args.token if args.token else os.environ.get("JIRA_TEMPO_TOKEN")
     if account_id and token:
-        reporter = TempoReporter(timer, account_id, token.replace("-", ""))
+        reporter = TempoReporter(timer, account_id.replace("-", ""), token)
         res = reporter.send()
         print(res.status_code, res.text)
