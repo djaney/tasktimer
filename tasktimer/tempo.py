@@ -1,13 +1,22 @@
 import requests
+from requests.auth import HTTPBasicAuth
 
 
 class TempoReporter(object):
-    def __init__(self, timer, account_id, token):
+    def __init__(self, timer, domain, username, jira_token, tempo_token):
         self.timer = timer
-        self.account_id = account_id
-        self.token = token
+        self.domain = domain
+        self.username = username
+        self.jira_token = jira_token
+        self.tempo_token = tempo_token
 
     def send(self):
+        res = requests.get(
+            "https://{}/rest/api/3/myself".format(self.domain),
+            auth=HTTPBasicAuth(self.username, self.jira_token),
+            headers={"accept": "application/json"}
+        )
+        profile = res.json()
         return requests.post(
             'https://api.tempo.io/core/3/worklogs',
             json={
@@ -16,9 +25,9 @@ class TempoReporter(object):
                 "startDate": self.timer.start_time.date().strftime("%Y-%m-%d"),
                 "startTime": self.timer.start_time.time().strftime("%H:%M:%S"),
                 "description": self.timer.description,
-                "authorAccountId": self.account_id,
+                "authorAccountId": profile.get("accountId"),
             },
             headers={
-                "Authorization": "Bearer {}".format(self.token)
+                "Authorization": "Bearer {}".format(self.tempo_token)
             }
         )

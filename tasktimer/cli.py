@@ -9,8 +9,10 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("ticket_number")
     parser.add_argument("description")
-    parser.add_argument("--account_id")
-    parser.add_argument("--token")
+    parser.add_argument("--domain")
+    parser.add_argument("--username")
+    parser.add_argument("--jira_token")
+    parser.add_argument("--tempo_token")
     args = parser.parse_args()
     timer = Timer(args.ticket_number, args.description)
     with timer as t:
@@ -23,9 +25,16 @@ def main():
     print(timer)
 
     # send to TEMPO
-    account_id = args.account_id if args.account_id else os.environ.get("JIRA_ACCOUNT_ID")
-    token = args.token if args.token else os.environ.get("JIRA_TEMPO_TOKEN")
-    if account_id and token:
-        reporter = TempoReporter(timer, account_id.replace("-", ""), token)
+    domain = args.domain if args.domain else os.environ.get("JIRA_DOMAIN")
+    username = args.username if args.username else os.environ.get("JIRA_USERNAME")
+    jira_token = args.jira_token if args.jira_token else os.environ.get("JIRA_TOKEN")
+    tempo_token = args.tempo_token if args.tempo_token else os.environ.get("JIRA_TEMPO_TOKEN")
+    if domain and username and tempo_token and jira_token:
+        print("attempting to send to tempo")
+        reporter = TempoReporter(timer, domain, username, jira_token, tempo_token)
         res = reporter.send()
         print(res.status_code, res.text)
+
+
+if __name__ == "__main__":
+    main()
