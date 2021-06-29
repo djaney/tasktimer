@@ -10,6 +10,6 @@ setup(
     author_email='thedjaney@gmail.com',
     description='',
     entry_points={
-        'console_scripts': ['tasktimer=main:main'],
+        'console_scripts': ['tasktimer=tasktimer.cli:main'],
     }
 )
