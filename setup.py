@@ -11,5 +11,8 @@ setup(
     description='',
     entry_points={
         'console_scripts': ['tasktimer=tasktimer.cli:main'],
-    }
+    },
+    install_requires=[
+        'requests'
+    ]
 )
