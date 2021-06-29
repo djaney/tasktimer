@@ -1,4 +1,5 @@
 import datetime
+import math
 
 
 def _parse_s(s):
@@ -60,6 +61,11 @@ class Timer(object):
         if now is None:
             now = datetime.datetime.now()
         self.total_time = now - self.start_time
+
+        # minimum is 15 minutes
+        seconds_by_15_min = math.ceil(self.total_time.seconds / 900) * 900
+        self.total_time = datetime.timedelta(seconds=seconds_by_15_min)
+
 
     def print(self):
         return "{} - {}".format(_parse_s(self.elapsed_s), self.ticket_number)
