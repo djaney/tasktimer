@@ -10,7 +10,7 @@ class TempoReporter(object):
     def send(self):
         return requests.post(
             'https://api.tempo.io/core/3/worklogs',
-            data={
+            json={
                 "issueKey": self.timer.ticket_number,
                 "timeSpentSeconds": self.timer.elapsed_s,
                 "startDate": self.timer.start_time.date().strftime("%Y-%m-%d"),
