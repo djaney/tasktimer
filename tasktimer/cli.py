@@ -33,7 +33,7 @@ def main():
         print("attempting to send to tempo")
         reporter = TempoReporter(timer, domain, username, jira_token, tempo_token)
         res = reporter.send()
-        print(res.status_code, res.text)
+        print("Sent" if res.ok else "Failed")
 
 
 if __name__ == "__main__":
