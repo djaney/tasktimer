@@ -2,6 +2,7 @@ import argparse
 import time
 from tasktimer.timer import Timer
 from tasktimer.tempo import TempoReporter
+import os
 
 
 def main():
@@ -22,7 +23,9 @@ def main():
     print(timer)
 
     # send to TEMPO
-    if args.account_id and args.token:
-        reporter = TempoReporter(timer, args.account_id, args.token)
+    account_id = args.account_id if args.account_id else os.environ.get("JIRA_ACCOUNT_ID")
+    token = args.token if args.token else os.environ.get("JIRA_TEMPO_TOKEN")
+    if account_id and token:
+        reporter = TempoReporter(timer, account_id, token)
         res = reporter.send()
         print(res.status_code, res.text)
