@@ -7,12 +7,12 @@ def _parse_s(s):
 
     if h >= 1:
         s = s - h * 60 * 60
-        out.append("{}h".format(h))
+        out.append("{:.0f}h".format(h))
 
     m = s // 60
 
     if m >= 1 or h == 0:
-        out.append("{}m".format(m))
+        out.append("{:.0f}m".format(m))
 
     return " ".join(out)
 
