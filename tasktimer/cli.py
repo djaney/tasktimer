@@ -3,6 +3,7 @@ import time
 from tasktimer.timer import Timer
 from tasktimer.tempo import TempoReporter
 import os
+import click
 
 
 def main():
@@ -18,22 +19,36 @@ def main():
     with timer as t:
         while True:
             try:
-                print(t)
+                click.clear()
+                click.echo(t)
                 time.sleep(60)
             except KeyboardInterrupt:
                 break
-    print(timer)
+    click.echo(timer)
 
-    # send to TEMPO
-    domain = args.domain if args.domain else os.environ.get("JIRA_DOMAIN")
-    username = args.username if args.username else os.environ.get("JIRA_USERNAME")
-    jira_token = args.jira_token if args.jira_token else os.environ.get("JIRA_TOKEN")
-    tempo_token = args.tempo_token if args.tempo_token else os.environ.get("JIRA_TEMPO_TOKEN")
-    if domain and username and tempo_token and jira_token:
-        print("attempting to send to tempo")
-        reporter = TempoReporter(timer, domain, username, jira_token, tempo_token)
-        res = reporter.send()
-        print("Sent" if res.ok else "Failed")
+    if click.confirm('Log to tempo?'):
+        # send to TEMPO
+        domain = args.domain if args.domain else os.environ.get("JIRA_DOMAIN")
+        username = args.username if args.username else os.environ.get("JIRA_USERNAME")
+        jira_token = args.jira_token if args.jira_token else os.environ.get("JIRA_TOKEN")
+        tempo_token = args.tempo_token if args.tempo_token else os.environ.get("JIRA_TEMPO_TOKEN")
+        if domain and username and tempo_token and jira_token:
+            more_info = []
+            while True:
+                text = click.prompt('More info. (black to continue):')
+                if text:
+                    more_info.append(text)
+                else:
+                    break
+
+            timer.description += "\n\n{}".format("\n".join(more_info))
+
+            click.echo("Sending...")
+            reporter = TempoReporter(timer, domain, username, jira_token, tempo_token)
+            res = reporter.send()
+            click.echo("Sent!" if res.ok else "Failed")
+        else:
+            click.echo("There is something wrong with the configuration", err=True)
 
 
 if __name__ == "__main__":

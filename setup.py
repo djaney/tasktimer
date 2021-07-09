@@ -13,6 +13,7 @@ setup(
         'console_scripts': ['tasktimer=tasktimer.cli:main'],
     },
     install_requires=[
-        'requests'
+        'requests~=2.25.1',
+        'click~=8.0.1',
     ]
 )
