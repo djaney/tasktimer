@@ -40,6 +40,8 @@ def main():
                     more_info.append(text)
                 except KeyboardInterrupt:
                     break
+                except click.exceptions.Abort:
+                    break
 
             timer.description += "\n\n{}".format("\n".join(more_info))
 
