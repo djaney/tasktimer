@@ -26,7 +26,7 @@ def main():
                 break
     click.echo(timer)
 
-    if click.confirm('Log to tempo?'):
+    if click.confirm('Log to tempo?', default=True):
         # send to TEMPO
         domain = args.domain if args.domain else os.environ.get("JIRA_DOMAIN")
         username = args.username if args.username else os.environ.get("JIRA_USERNAME")
