@@ -35,10 +35,10 @@ def main():
         if domain and username and tempo_token and jira_token:
             more_info = []
             while True:
-                text = click.prompt('More info. (black to continue):')
-                if text:
+                try:
+                    text = click.prompt('Add more info. (Ctrl+C when done)')
                     more_info.append(text)
-                else:
+                except KeyboardInterrupt:
                     break
 
             timer.description += "\n\n{}".format("\n".join(more_info))
