@@ -11,4 +11,4 @@ set environment in ~/.bashrc
 
 ## Usage
 
-    tasktimer [-h] [--domain DOMAIN] [--username USERNAME] [--jira_token JIRA_TOKEN] [--tempo_token TEMPO_TOKEN] ticket_number description
+    usage: tasktimer [-h] [--domain DOMAIN] [--username USERNAME] [--jira_token JIRA_TOKEN] [--tempo_token TEMPO_TOKEN]
