@@ -28,6 +28,7 @@ class Timer(object):
         self.ticket_number = ticket_number
         self.description = description
         self.history = []
+        self.first_start_time = None
         self.start_time = None
         self.total_time = None
 
@@ -52,6 +53,9 @@ class Timer(object):
         if now is None:
             now = datetime.datetime.now()
         self.start_time = now
+
+        if self.first_start_time is None:
+            self.first_start_time = self.start_time
 
     def end(self, now=None):
         if self.start_time is None:

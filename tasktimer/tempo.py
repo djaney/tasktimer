@@ -22,8 +22,8 @@ class TempoReporter(object):
             json={
                 "issueKey": self.timer.ticket_number,
                 "timeSpentSeconds": self.timer.elapsed_s,
-                "startDate": self.timer.start_time.date().strftime("%Y-%m-%d"),
-                "startTime": self.timer.start_time.time().strftime("%H:%M:%S"),
+                "startDate": self.timer.first_start_time.date().strftime("%Y-%m-%d"),
+                "startTime": self.timer.first_start_time.time().strftime("%H:%M:%S"),
                 "description": self.timer.description,
                 "authorAccountId": profile.get("accountId"),
             },
