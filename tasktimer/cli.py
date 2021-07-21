@@ -60,11 +60,11 @@ def main():
         with timer as t:
             click.clear()
             click.echo("Current time - {}".format(str(t)))
-            while not click.confirm('Started - Pause now?', default=True):
+            while not click.confirm(click.style('STARTED, Pause now?', bg='green', fg='white'), default=True):
                 pass
         click.clear()
         click.echo("Current time - {}".format(str(t)))
-        if click.confirm("Currently paused - Stop now?", default=False):
+        if click.confirm(click.style('PAUSED, Stop now?', bg='red', fg='white'), default=False):
             break
 
     click.echo("{}\n".format(timer))
