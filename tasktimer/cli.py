@@ -34,28 +34,38 @@ def get_ticket_list(args):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("--ticket")
+    parser.add_argument("--description")
     parser.add_argument("--domain", default=os.environ.get("JIRA_DOMAIN"))
     parser.add_argument("--username", default=os.environ.get("JIRA_USERNAME"))
     parser.add_argument("--jira_token", default=os.environ.get("JIRA_TOKEN"))
     parser.add_argument("--tempo_token", default=os.environ.get("JIRA_TEMPO_TOKEN"))
     args = parser.parse_args()
 
-    tickets = get_ticket_list(args)
-    for t, txt in tickets.items():
-        click.echo("{}: {}".format(t, txt))
-    ticket_number = click.prompt("Choose a ticket",
-                                 show_choices=False, type=click.Choice(tickets, case_sensitive=False))
-    description = click.prompt("What are you doing now?")
+    if args.ticket:
+        ticket_number = args.ticket
+    else:
+        tickets = get_ticket_list(args)
+        for t, txt in tickets.items():
+            click.echo("{}: {}".format(t, txt))
+        ticket_number = click.prompt("Choose a ticket",
+                                     show_choices=False, type=click.Choice(tickets, case_sensitive=False))
+    if args.description:
+        description = args.description
+    else:
+        description = click.prompt("What are you doing now?")
 
     timer = Timer(ticket_number, description)
-    with timer as t:
-        while True:
-            try:
-                click.clear()
-                click.echo(t)
-                time.sleep(60)
-            except KeyboardInterrupt:
-                break
+    while True:
+        with timer as t:
+            click.clear()
+            click.echo("Current time - {}".format(str(t)))
+            while not click.confirm('Started - Pause now?', default=True):
+                pass
+        click.clear()
+        click.echo("Current time - {}".format(str(t)))
+        if click.confirm("Currently paused - Stop now?", default=False):
+            break
 
     click.echo("{}\n".format(timer))
 

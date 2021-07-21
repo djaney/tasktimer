@@ -27,6 +27,7 @@ class Timer(object):
     def __init__(self, ticket_number, description=None):
         self.ticket_number = ticket_number
         self.description = description
+        self.history = []
         self.start_time = None
         self.total_time = None
 
@@ -42,12 +43,10 @@ class Timer(object):
 
     @property
     def elapsed_s(self):
-        if self.start_time is None:
-            return 0
         if self.total_time:
             return self.total_time.seconds
         else:
-            return (datetime.datetime.now() - self.start_time).seconds
+            return 0
 
     def start(self, now=None):
         if now is None:
@@ -60,12 +59,17 @@ class Timer(object):
 
         if now is None:
             now = datetime.datetime.now()
-        self.total_time = now - self.start_time
+        self.history.append(now - self.start_time)
+        self.total_time = datetime.timedelta(seconds=0)
+        for i in self.history:
+            self.total_time += i
+
+        # reset
+        self.start_time = None
 
         # minimum is 15 minutes
         seconds_by_15_min = math.ceil(self.total_time.seconds / 900) * 900
         self.total_time = datetime.timedelta(seconds=seconds_by_15_min)
-
 
     def print(self):
         return "{} - {}".format(_parse_s(self.elapsed_s), self.ticket_number)
