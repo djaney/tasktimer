@@ -86,10 +86,15 @@ def main():
 
             timer.description += "\n\n{}".format("\n".join(more_info))
 
+            click.echo("Ticket: {}".format(timer.ticket_number))
+            click.echo("Description: {}".format(timer.description))
             click.echo("Sending...")
             reporter = TempoReporter(timer, domain, username, jira_token, tempo_token)
             res = reporter.send()
-            click.echo("Sent!" if res.ok else "Failed")
+            if res.ok:
+                click.echo("Sent!")
+            else:
+                click.echo("Failed!", err=True)
         else:
             click.echo("There is something wrong with the configuration", err=True)
 
