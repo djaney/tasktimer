@@ -94,7 +94,7 @@ def main():
             if res.ok:
                 click.echo("Sent!")
             else:
-                click.echo("Failed!", err=True)
+                click.echo("Failed! {}".format(res.text), err=True)
         else:
             click.echo("There is something wrong with the configuration", err=True)
 
