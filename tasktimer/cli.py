@@ -90,7 +90,7 @@ def main():
             click.echo("Description: {}".format(description))
             click.echo("Sending...")
             reporter = TempoReporter(timer, domain, username, jira_token, tempo_token)
-            res = reporter.send()
+            res = reporter.send(ticket_number, description)
             if res.ok:
                 click.echo("Sent!")
             else:

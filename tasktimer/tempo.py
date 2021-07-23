@@ -10,7 +10,7 @@ class TempoReporter(object):
         self.jira_token = jira_token
         self.tempo_token = tempo_token
 
-    def send(self):
+    def send(self, ticket_number, description):
         res = requests.get(
             "https://{}/rest/api/3/myself".format(self.domain),
             auth=HTTPBasicAuth(self.username, self.jira_token),
@@ -20,11 +20,11 @@ class TempoReporter(object):
         return requests.post(
             'https://api.tempo.io/core/3/worklogs',
             json={
-                "issueKey": self.timer.ticket_number,
+                "issueKey": ticket_number,
                 "timeSpentSeconds": self.timer.elapsed_s,
                 "startDate": self.timer.first_start_time.date().strftime("%Y-%m-%d"),
                 "startTime": self.timer.first_start_time.time().strftime("%H:%M:%S"),
-                "description": self.timer.description,
+                "description": description,
                 "authorAccountId": profile.get("accountId"),
             },
             headers={
