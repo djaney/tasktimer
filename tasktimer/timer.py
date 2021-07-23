@@ -24,8 +24,7 @@ class NotStarted(Exception):
 
 class Timer(object):
 
-    def __init__(self, description=None):
-        self.description = description
+    def __init__(self):
         self.history = []
         self.first_start_time = None
         self.start_time = None

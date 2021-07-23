@@ -1,11 +1,11 @@
 import argparse
-import time
 from tasktimer.timer import Timer
 from tasktimer.tempo import TempoReporter
 import os
 import click
 import requests
 from requests.auth import HTTPBasicAuth
+
 
 def get_ticket_list(args):
 
@@ -55,7 +55,7 @@ def main():
     else:
         description = click.prompt("What are you doing now?")
 
-    timer = Timer(ticket_number, description)
+    timer = Timer()
     while True:
         with timer as t:
             click.clear()
@@ -84,10 +84,10 @@ def main():
                 else:
                     break
 
-            timer.description += "\n\n{}".format("\n".join(more_info))
+            description += "\n\n{}".format("\n".join(more_info))
 
             click.echo("Ticket: {}".format(ticket_number))
-            click.echo("Description: {}".format(timer.description))
+            click.echo("Description: {}".format(description))
             click.echo("Sending...")
             reporter = TempoReporter(timer, domain, username, jira_token, tempo_token)
             res = reporter.send()
