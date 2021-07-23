@@ -86,7 +86,7 @@ def main():
 
             timer.description += "\n\n{}".format("\n".join(more_info))
 
-            click.echo("Ticket: {}".format(timer.ticket_number))
+            click.echo("Ticket: {}".format(ticket_number))
             click.echo("Description: {}".format(timer.description))
             click.echo("Sending...")
             reporter = TempoReporter(timer, domain, username, jira_token, tempo_token)

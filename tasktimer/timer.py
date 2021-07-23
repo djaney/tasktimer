@@ -24,8 +24,7 @@ class NotStarted(Exception):
 
 class Timer(object):
 
-    def __init__(self, ticket_number, description=None):
-        self.ticket_number = ticket_number
+    def __init__(self, description=None):
         self.description = description
         self.history = []
         self.first_start_time = None
@@ -76,4 +75,4 @@ class Timer(object):
         self.total_time = datetime.timedelta(seconds=seconds_by_15_min)
 
     def print(self):
-        return "{} - {}".format(_parse_s(self.elapsed_s), self.ticket_number)
+        return "{}".format(_parse_s(self.elapsed_s))
