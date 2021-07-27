@@ -59,11 +59,15 @@ def main():
     while True:
         with timer as t:
             click.clear()
-            click.echo("Current time - {}".format(str(t)))
+            click.echo("Current time: {}".format(str(t)))
+            click.echo("Ticket: {}".format(ticket_number))
+            click.echo("Description: {}".format(description))
             while not click.confirm(click.style('STARTED, Pause now?', bg='green', fg='white'), default=True):
                 pass
         click.clear()
-        click.echo("Current time - {}".format(str(t)))
+        click.echo("Current time: {}".format(str(t)))
+        click.echo("Ticket: {}".format(ticket_number))
+        click.echo("Description: {}".format(description))
         if click.confirm(click.style('PAUSED, Stop now?', bg='red', fg='white'), default=False):
             break
 
@@ -86,6 +90,7 @@ def main():
 
             description += "\n\n{}".format("\n".join(more_info))
 
+            click.clear()
             click.echo("Ticket: {}".format(ticket_number))
             click.echo("Description: {}".format(description))
             click.echo("Sending...")
