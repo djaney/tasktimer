@@ -73,35 +73,41 @@ def main():
 
     click.echo("{}\n".format(timer))
 
-    if click.confirm('Log to tempo?', default=True):
-        # send to TEMPO
-        domain = args.domain
-        username = args.username
-        jira_token = args.jira_token
-        tempo_token = args.tempo_token
-        if domain and username and tempo_token and jira_token:
-            more_info = []
-            while True:
-                text = click.prompt('Add more info. (blank to end)', default="")
-                if text:
-                    more_info.append(text)
-                else:
+    while True:
+        if click.confirm('Log to tempo?', default=True):
+            # send to TEMPO
+            domain = args.domain
+            username = args.username
+            jira_token = args.jira_token
+            tempo_token = args.tempo_token
+            if domain and username and tempo_token and jira_token:
+                more_info = []
+                while True:
+                    text = click.prompt('Add more info. (blank to end)', default="")
+                    if text:
+                        more_info.append(text)
+                    else:
+                        break
+
+                description += "\n\n{}".format("\n".join(more_info))
+
+                click.clear()
+                click.echo("Ticket: {}".format(ticket_number))
+                click.echo("Description: {}".format(description))
+                click.echo("Sending...")
+                reporter = TempoReporter(timer, domain, username, jira_token, tempo_token)
+                res = reporter.send(ticket_number, description)
+                if res.ok:
+                    click.echo("Sent!")
                     break
-
-            description += "\n\n{}".format("\n".join(more_info))
-
-            click.clear()
-            click.echo("Ticket: {}".format(ticket_number))
-            click.echo("Description: {}".format(description))
-            click.echo("Sending...")
-            reporter = TempoReporter(timer, domain, username, jira_token, tempo_token)
-            res = reporter.send(ticket_number, description)
-            if res.ok:
-                click.echo("Sent!")
+                else:
+                    click.echo("Failed with status {}! {}".format(res.status_code, res.text), err=True)
+                    continue
             else:
-                click.echo("Failed with status {}! {}".format(res.status_code, res.text), err=True)
+                click.echo("There is something wrong with the configuration", err=True)
+                break
         else:
-            click.echo("There is something wrong with the configuration", err=True)
+            break
 
 
 if __name__ == "__main__":
