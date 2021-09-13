@@ -1,6 +1,6 @@
 import argparse
 from tasktimer.timer import Timer
-from tasktimer.tempo import TempoReporter
+from tasktimer.tempo import Tempo
 import os
 import click
 import requests
@@ -95,8 +95,8 @@ def main():
                 click.echo("Ticket: {}".format(ticket_number))
                 click.echo("Description: {}".format(description))
                 click.echo("Sending...")
-                reporter = TempoReporter(timer, domain, username, jira_token, tempo_token)
-                res = reporter.send(ticket_number, description)
+                reporter = Tempo(domain, username, jira_token, tempo_token)
+                res = reporter.send_worklogs(timer, ticket_number, description)
                 if res.ok:
                     click.echo("Sent!")
                     break
