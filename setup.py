@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='tasktimer',
-    version='',
+    version='0.0.1',
     packages=['tasktimer'],
     url='',
     license='',
